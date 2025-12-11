@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     ENCRYPTION_KEY: str
+    GITHUB_WEBHOOK_SECRET: str = "your-webhook-secret-change-this"
     
     # App
     ENVIRONMENT: str = "development"

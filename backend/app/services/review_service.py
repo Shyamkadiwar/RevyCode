@@ -181,27 +181,27 @@ class ReviewService:
         # Get agent output
         agent_output = review.agent_results[0].output if review.agent_results else None
         
-        comment = f"""## 🤖 RevyCode AI Review
+        comment = f"""## RevyCode AI Review
 
 **PR:** #{review.pr_number} - {review.pr_title}
 
-### 📊 Summary
+### Summary
 {agent_output.summary if agent_output else 'No summary available'}
 
-### 🔍 Issues Found: {review.issues_found}
+### Issues Found: {review.issues_found}
 
 """
         
         if review.issues_found > 0:
             comment += f"""
 **By Severity:**
-- 🔴 High: {review.high_issues}
-- 🟠 Medium: {review.medium_issues}
-- 🟡 Low: {review.low_issues}
+- High: {review.high_issues}
+- Medium: {review.medium_issues}
+- Low: {review.low_issues}
 """
             
             if agent_output and agent_output.code_quality_issues:
-                comment += "\n### 📝 Detailed Issues\n\n"
+                comment += "\n### Detailed Issues\n\n"
                 
                 # Group by file
                 issues_by_file = {}
@@ -214,10 +214,10 @@ class ReviewService:
                 for file, issues in issues_by_file.items():
                     comment += f"\n**{file}**\n"
                     for issue in issues:
-                        severity_emoji = {"high": "🔴", "medium": "🟠", "low": "🟡"}.get(issue.get('severity', 'low'), "⚪")
+                        severity_emoji = {"high": "high", "medium": "medium", "low": "low"}.get(issue.get('severity', 'low'), "⚪")
                         comment += f"- {severity_emoji} Line {issue.get('line', 'N/A')}: {issue.get('message', 'No description')}\n"
         else:
-            comment += "\n✅ No major issues found!\n"
+            comment += "\nNo major issues found!\n"
         
         comment += f"\n\n---\n*Analyzed in {review.processing_time_total_ms/1000:.2f}s by RevyCode AI*"
         
